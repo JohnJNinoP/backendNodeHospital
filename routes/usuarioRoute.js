@@ -5,8 +5,11 @@ const app = express()
 
 var usuarioModel = require('../models/usuario')
 
+var autentication = require('../middlewares/autentication')
 
+//===========================================
 //Obtener todos los usuarios
+//===========================================
 app.get('/', (req, res, next) => {
 
     usuarioModel.find({  }, 'name email img rol').exec( (err, usuarios )=>{
@@ -19,7 +22,6 @@ app.get('/', (req, res, next) => {
                 }
             )
         }
-
         res.status(200).json(
             {
                 ok: true,
@@ -29,7 +31,9 @@ app.get('/', (req, res, next) => {
     })  
 })
 
+//===========================================
 // Obtener usuarios por nombre
+//===========================================
 app.get('/:name' , function(req,res) {
     let name =   req.params.name
 
@@ -41,8 +45,11 @@ app.get('/:name' , function(req,res) {
 })
 
 
+
+//===========================================
 //Insertar usuario
-app.post('/', (req,res) => {
+//===========================================
+app.post('/', autentication.verificaToken , (req,res) => {
     
     let body = req.body
 
@@ -70,8 +77,11 @@ app.post('/', (req,res) => {
     })
 })
 
+
+//===========================================
 //Actualizar usuario
-app.put('/:id', (req,res)=>{
+//===========================================
+app.put('/:id', autentication.verificaToken , (req,res)=>{
 
     let id =  req.params.id
     let body = req.body
@@ -110,9 +120,31 @@ app.put('/:id', (req,res)=>{
             })   
         }
     })
-
-    
 })
+//===========================================
+// Eliminar usuario
+//===========================================
+app.delete('/:id',autentication.verificaToken,(req,res)=>{
+    let id = req.params.id
+
+    usuarioModel.findByIdAndDelete(id).exec((err,user)=>{
+        if(err){
+            return res.status(500).json({
+                ok:false,
+                menssage:"Error eliminaod usuario",
+                error: err
+            })
+        }
+        if(!user){
+            return res.status(204).json({})
+        }
+
+        res.status(200).json({
+            ok:true,
+        })
+    })
+})
+
 
 
 module.exports = app;

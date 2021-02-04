@@ -19,6 +19,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 var appRoutes = require("./routes/app")
 var appUsuario = require("./routes/usuarioRoute")
+var appLogin = require('./routes/login')
 
 mongoose.connection.openUri('mongodb://localhost:27017/HospitalDB',(err,res) => {
     if(err) throw err
@@ -26,6 +27,8 @@ mongoose.connection.openUri('mongodb://localhost:27017/HospitalDB',(err,res) => 
     console.log("Mongo server run in port 27017 : \x1b[32m%s\x1b[0m ",'online')
  })
 
+
+app.use('/login',appLogin)
 app.use('/usuario', appUsuario)
 app.use('/', appRoutes)
 
