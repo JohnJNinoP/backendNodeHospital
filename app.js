@@ -20,6 +20,8 @@ app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 var appRoutes = require("./routes/app")
 var appUsuario = require("./routes/usuarioRoute")
 var appLogin = require('./routes/login')
+var appHospital = require('./routes/hospital')
+var appMedico = require('./routes/medico')
 
 mongoose.connection.openUri('mongodb://localhost:27017/HospitalDB',(err,res) => {
     if(err) throw err
@@ -30,6 +32,9 @@ mongoose.connection.openUri('mongodb://localhost:27017/HospitalDB',(err,res) => 
 
 app.use('/login',appLogin)
 app.use('/usuario', appUsuario)
+app.use('/hospital',appHospital)
+app.use('/medico',appMedico)
+
 app.use('/', appRoutes)
 
 // Escuchar peticiones 
