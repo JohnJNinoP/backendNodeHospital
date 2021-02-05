@@ -12,7 +12,13 @@ var autentication = require('../middlewares/autentication')
 //===========================================
 app.get('/', (req, res, next) => {
 
-    usuarioModel.find({  }, 'name email img rol').exec( (err, usuarios )=>{
+    var desde  = req.query.desde || 0
+    desde = Number(desde)
+
+    usuarioModel.find({  }, 'name email img rol')
+    .skip(desde)   // Obtiene un paginado desde 
+    .limit(5)      // Limita la consulta a n registros
+    .exec( (err, usuarios )=>{
         if(err) {
             return res.status(500).json(
                 {
@@ -22,12 +28,27 @@ app.get('/', (req, res, next) => {
                 }
             )
         }
-        res.status(200).json(
-            {
-                ok: true,
-                usuarios : usuarios
+
+        usuarioModel.count({},(err, count)=>{
+
+            if(err) {
+                return res.status(500).json(
+                    {
+                        ok: true,
+                        mensaje:"Error consultando mongoDB",
+                        error : err
+                    }
+                )
             }
-        )
+
+            res.status(200).json(
+                {
+                    ok: true,
+                    usuarios : usuarios,
+                    total : count
+                }
+            )
+        })
     })  
 })
 

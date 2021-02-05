@@ -8,7 +8,16 @@ var medicoModel = require('../models/medico')
 //Obtener todos los medicos
 //===============================================
 app.get('/',(req,res)=>{
-    medicoModel.find({}).exec((err,medicos)=>{
+
+    var desde  = req.query.desde || 0
+    desde = Number(desde)
+
+    medicoModel.find({})
+    .skip(desde)
+    .limit(5)
+    .populate('usuario','name email')
+    .populate('hospital')
+    .exec((err,medicos)=>{
         if(err){
             return res.status(500).json({
                 ok:false,

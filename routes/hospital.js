@@ -24,7 +24,14 @@ var hospitalModel = require('../models/hospital')
 //===========================================
 app.get('/' ,(req,res)=>{
 
-    hospitalModel.find({}).exec(
+    var desde  = req.query.desde || 0
+    desde = Number(desde)
+
+    hospitalModel.find({})
+    .skip(desde)
+    .limit(5)
+    .populate("usuario","name email")
+    .exec(
         (err,hospitales)=>{
             if(err){
                 return res.status(500).json({

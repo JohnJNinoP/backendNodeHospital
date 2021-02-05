@@ -22,6 +22,10 @@ var appUsuario = require("./routes/usuarioRoute")
 var appLogin = require('./routes/login')
 var appHospital = require('./routes/hospital')
 var appMedico = require('./routes/medico')
+var appBusqueda = require('./routes/busqueda')
+var appUpload = require('./routes/upload')
+var appImg = require('./routes/imagenes')
+
 
 mongoose.connection.openUri('mongodb://localhost:27017/HospitalDB',(err,res) => {
     if(err) throw err
@@ -34,6 +38,9 @@ app.use('/login',appLogin)
 app.use('/usuario', appUsuario)
 app.use('/hospital',appHospital)
 app.use('/medico',appMedico)
+app.use('/busqueda',appBusqueda)
+app.use('/upload',appUpload)
+app.use('/img',appImg)
 
 app.use('/', appRoutes)
 
