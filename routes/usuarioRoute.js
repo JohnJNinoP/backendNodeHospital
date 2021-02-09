@@ -169,4 +169,37 @@ app.delete('/:id',autentication.verificaToken,(req,res)=>{
 
 
 
+//===========================================
+//Insertar usuario google 
+//===========================================
+app.post('/', autentication.verificaToken , (req,res) => {
+    
+    let body = req.body
+
+    let usuario = new usuarioModel({
+        name : body.name,
+        email : body.email,
+        password : bcrypt.hashSync(body.password,10),
+        img : body.img,
+        role : body.role
+    })
+
+    usuario.save((err,response) => {
+        if(err){
+            return res.status(400).json({
+                ok:false,
+                mensaje : "Error",
+                error : err
+            })
+        }
+
+        res.status(201).json({
+            ok:true,
+            id : response._id
+        })
+    })
+})
+
+
+
 module.exports = app;
