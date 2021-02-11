@@ -88,7 +88,6 @@ async function verify(token) {
 app.post('/googlesingin' , async(req,res)=>{
     let body = req.body
     
-
     var googleUser = await verify(body.token)
     .catch(()=>{
         return res.status(403).json({

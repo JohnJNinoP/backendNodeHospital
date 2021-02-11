@@ -70,7 +70,7 @@ app.get('/:name' , function(req,res) {
 //===========================================
 //Insertar usuario
 //===========================================
-app.post('/', autentication.verificaToken , (req,res) => {
+app.post('/' , (req,res) => {
     
     let body = req.body
 
@@ -97,7 +97,6 @@ app.post('/', autentication.verificaToken , (req,res) => {
         })
     })
 })
-
 
 //===========================================
 //Actualizar usuario

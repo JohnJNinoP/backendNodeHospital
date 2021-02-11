@@ -1,6 +1,8 @@
 // Requares
 const express = require('express')
 const mongoose = require('mongoose')
+var cors = require('cors')
+
 
 //Inicializar variables
 const app = express()
@@ -26,6 +28,12 @@ var appBusqueda = require('./routes/busqueda')
 var appUpload = require('./routes/upload')
 var appImg = require('./routes/imagenes')
 
+var corsOptions = {
+    origin: 'http://localhost:4200',
+    methods : 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+  }
+
 
 mongoose.connection.openUri('mongodb://localhost:27017/HospitalDB',(err,res) => {
     if(err) throw err
@@ -33,6 +41,7 @@ mongoose.connection.openUri('mongodb://localhost:27017/HospitalDB',(err,res) => 
     console.log("Mongo server run in port 27017 : \x1b[32m%s\x1b[0m ",'online')
  })
 
+app.use(cors(corsOptions))
 
 app.use('/login',appLogin)
 app.use('/usuario', appUsuario)
