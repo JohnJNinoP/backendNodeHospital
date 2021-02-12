@@ -107,7 +107,8 @@ function subirPorTipo(tipo, id,nameFile,res){
                     }
 
                     return res.status(200).json({
-                        ok:true
+                        ok:true,
+                        img : value.img
                     })
     
                 })                
@@ -150,7 +151,8 @@ function subirPorTipo(tipo, id,nameFile,res){
                     }
 
                     return res.status(200).json({
-                        ok:true
+                        ok:true,
+                        img : value.img
                     })
     
                 })                
@@ -194,7 +196,8 @@ function subirPorTipo(tipo, id,nameFile,res){
                     }
 
                     return res.status(200).json({
-                        ok:true
+                        ok:true,
+                        img : value.img
                     })
                 })                
             })

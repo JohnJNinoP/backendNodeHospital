@@ -23,7 +23,7 @@ const { use } = require('./usuarioRoute');
 app.post('/', (req,res)=>{
     let body = req.body
 
-    usuarioModel.findOne({ email : body.email },'name role password').exec((err,user)=>{
+    usuarioModel.findOne({ email : body.email },'name role password img email').exec((err,user)=>{
         if(err){
             return res.status(500).json({
                 ok:false,
@@ -55,7 +55,7 @@ app.post('/', (req,res)=>{
             token:token
         })
     })
-})
+}) 
 
 
 //========================================================
@@ -96,7 +96,7 @@ app.post('/googlesingin' , async(req,res)=>{
         })
     })
 
-    usuarioModel.findOne({ email:googleUser.email }, 'name email role').exec((err,value)=>{
+    usuarioModel.findOne({ email:googleUser.email }, 'name email role img').exec((err,value)=>{
         if(err){
             return res.status(500).json({
                 ok:false,
@@ -126,6 +126,7 @@ app.post('/googlesingin' , async(req,res)=>{
                email : googleUser.email,
                password : bcrypt.hashSync("::",10) ,
                google : true,
+               img : googleUser.img,
                role : "USER"
             });
         
@@ -143,7 +144,8 @@ app.post('/googlesingin' , async(req,res)=>{
                     _id : user._id,
                     name : user.name,
                     email : user.email,
-                    role : user.role
+                    role : user.role,
+                    img : user.img
                 }
 
                 var token = jwt.sign({ usuario : userToken },seed,{ expiresIn : 14400 } )

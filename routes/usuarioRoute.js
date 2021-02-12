@@ -126,7 +126,7 @@ app.put('/:id', autentication.verificaToken , (req,res)=>{
             user.email = body.email
             user.role = body.role
 
-            user.save((err)=>{
+            user.save((err,userReult) =>{
                 if(err){
                     return res.status(400).json({
                         ok:false,
@@ -135,7 +135,8 @@ app.put('/:id', autentication.verificaToken , (req,res)=>{
                     })
                 }
                 res.status(200).json({
-                    ok:true
+                    ok:true,
+                    data : userReult
                 })
             })   
         }
