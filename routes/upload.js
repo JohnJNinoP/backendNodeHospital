@@ -12,6 +12,7 @@ var hospitalNodel = require('../models/hospital')
 var usuarioNodel = require('../models/usuario')
 
 var  pathimg = require('../config').PATH;
+const { validate } = require('../models/usuario');
 
 //===================================================
 // middleware 
@@ -108,7 +109,8 @@ function subirPorTipo(tipo, id,nameFile,res){
 
                     return res.status(200).json({
                         ok:true,
-                        img : value.img
+                        img : value.img,
+                        _id : value._id
                     })
     
                 })                
@@ -152,7 +154,8 @@ function subirPorTipo(tipo, id,nameFile,res){
 
                     return res.status(200).json({
                         ok:true,
-                        img : value.img
+                        img : value.img,
+                        _id : value._id
                     })
     
                 })                
@@ -197,7 +200,8 @@ function subirPorTipo(tipo, id,nameFile,res){
 
                     return res.status(200).json({
                         ok:true,
-                        img : value.img
+                        img : value.img,
+                        _id : value._id
                     })
                 })                
             })

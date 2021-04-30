@@ -13,11 +13,14 @@ var autentication = require('../middlewares/autentication')
 app.get('/', (req, res, next) => {
 
     var desde  = req.query.desde || 0
+    var cantidad = Number(req.query.cantidad || 5)
+
     desde = Number(desde)
 
-    usuarioModel.find({  }, 'name email img rol')
+
+    usuarioModel.find({  }, 'name email img role google')
     .skip(desde)   // Obtiene un paginado desde 
-    .limit(5)      // Limita la consulta a n registros
+    .limit(cantidad)      // Limita la consulta a n registros
     .exec( (err, usuarios )=>{
         if(err) {
             return res.status(500).json(
@@ -58,9 +61,11 @@ app.get('/', (req, res, next) => {
 app.get('/:name' , function(req,res) {
     let name =   req.params.name
 
-    usuarioModel.find({ name : name }).exec( (err,usuario) => {
+    var valueRegex = new RegExp(name , 'i')
+
+    usuarioModel.find({ name : {  $regex : valueRegex} },'name email img role google' ).exec( (err,usuarios) => {
         res.status(200).json({
-            usuario
+            usuarios
         })    
     } )
 })
@@ -153,7 +158,7 @@ app.delete('/:id',autentication.verificaToken,(req,res)=>{
         if(err){
             return res.status(500).json({
                 ok:false,
-                menssage:"Error eliminaod usuario",
+                menssage:"Error eliminado usuario",
                 error: err
             })
         }

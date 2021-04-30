@@ -27,6 +27,7 @@ var appMedico = require('./routes/medico')
 var appBusqueda = require('./routes/busqueda')
 var appUpload = require('./routes/upload')
 var appImg = require('./routes/imagenes')
+var appIntegracion = require('./routes/integracion')
 
 var corsOptions = {
     origin: 'http://localhost:4200',
@@ -50,6 +51,7 @@ app.use('/medico',appMedico)
 app.use('/busqueda',appBusqueda)
 app.use('/upload',appUpload)
 app.use('/img',appImg)
+app.use('/integracion',appIntegracion)
 
 app.use('/', appRoutes)
 
