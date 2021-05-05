@@ -95,7 +95,9 @@ function buscarHospitales(valueRegex){
 function buscarMedico(valueRegex){
 
     return new Promise((resolve,reject)=>{
-        medicosModel.find({name: {  $regex : valueRegex} },'name ' ).exec((err,values)=>{
+        medicosModel.find({name: {  $regex : valueRegex} },'name img' )
+        .populate('hospital')
+        .exec((err,values)=>{
             if(err){
                 reject("Error al cargar medicos" , err)
             }else {

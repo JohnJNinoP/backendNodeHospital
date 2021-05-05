@@ -29,7 +29,7 @@ app.get('/' ,(req,res)=>{
 
     hospitalModel.find({})
     .skip(desde)
-    .limit(5)
+    //.limit(5)
     .populate("usuario","name email")
     .exec(
         (err,hospitales)=>{
@@ -54,7 +54,9 @@ app.get('/' ,(req,res)=>{
 
 app.get('/:id',(req,res)=>{
     let id = req.params.id
-    hospitalModel.findById(id,'name').exec((err,hospital)=>{
+    hospitalModel.findById(id,'name img')
+    .populate('usuario', 'nombre img email')
+    .exec((err,hospital)=>{
         if(err){
             return res.status(500).json({
                 ok:false,

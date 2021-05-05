@@ -14,7 +14,7 @@ app.get('/',(req,res)=>{
 
     medicoModel.find({})
     .skip(desde)
-    .limit(5)
+    //.limit(5)
     .populate('usuario','name email')
     .populate('hospital')
     .exec((err,medicos)=>{
@@ -24,7 +24,7 @@ app.get('/',(req,res)=>{
                 message : "Error",
                 error: err
             })
-        }   
+        }
 
         res.status(200).json({
             ok:true,
@@ -32,6 +32,31 @@ app.get('/',(req,res)=>{
         })
     })
 })
+
+//===============================================
+//Get doctor by id
+//===============================================
+app.get('/:id',(req,res)=>{
+    
+    let id = req.params.id
+
+    medicoModel.findById(id,)
+    .populate('hospital')
+    .exec((err,medico)=>{
+        if(err){
+            return res.status(500).json({
+                ok:false,
+                message:"Error",
+                error : err
+            })
+        }
+        return res.status(200).json({
+            ok:true,
+            medico
+        })
+    })
+})
+
 
 //===============================================
 //Insertar un medico
@@ -87,6 +112,7 @@ app.put('/:id',autentication.verificaToken,(req,res)=>{
         }
 
         medico.name = body.name
+        medico.hospital = body.hospital
 
         medico.save((err,value)=>{
             if(err){
