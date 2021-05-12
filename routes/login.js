@@ -17,6 +17,19 @@ var usuarioModel = require('../models/usuario');
 const usuario = require('../models/usuario');
 const { use } = require('./usuarioRoute');
 
+var autentication = require('../middlewares/autentication')
+//========================================================
+// login internal 
+//========================================================
+app.get('/newToken',autentication.verificaToken,(req,res)=>
+{
+    var token = jwt.sign({ usuario : req.usuario },seed,{ expiresIn : 14400 } )
+    res.status(200).json({
+        token
+    })
+})
+
+
 //========================================================
 // login internal 
 //========================================================
@@ -49,10 +62,13 @@ app.post('/', (req,res)=>{
         user.password = ""
         var token = jwt.sign({ usuario : user },seed,{ expiresIn : 14400 } )
 
+        var menu = Menu(user.role)
+
         res.status(200).json({
             ok:true,
             data : user,
-            token:token
+            token:token,
+            menu
         })
     })
 }) 
@@ -113,10 +129,13 @@ app.post('/googlesingin' , async(req,res)=>{
                 })
             }else {
                 var token = jwt.sign({ usuario : value },seed,{ expiresIn : 14400 } )
+
+                var menu = Menu(value.role)
                 res.status(200).json({
                     ok:true,
                     data : value,
-                    token
+                    token,
+                    menu
                 })
             }
         }else{
@@ -150,9 +169,12 @@ app.post('/googlesingin' , async(req,res)=>{
 
                 var token = jwt.sign({ usuario : userToken },seed,{ expiresIn : 14400 } )
 
+                var menu = Menu(userToken.role)
+
                 res.status(200).json({
                     ok:true,
                     data : userToken,
+                    menu,
                     token
                 })
             })
@@ -178,5 +200,59 @@ app.post('/googlesingin' , async(req,res)=>{
     // })
 })
 
+
+function Menu(ROL){
+    var menu  = [
+        {
+          title : "Principal",
+          icon:"mdi mdi-gauge",
+          submenu:[
+            {
+              title:"Dashboard",
+              url :"/dashboard"
+            },
+            {
+              title:"Progress",
+              url :"/progress"
+            },
+            {
+              title:"chart",
+              url :"/graficas1"
+            },
+            {
+              title:"Setting",
+              url :"/accountsetting"
+            },
+            {
+              title:"Promesas",
+              url:'/promesas'
+            },
+            {
+              title:"Observable",
+              url:"/rxjs"
+            }
+          ]
+        },
+        {
+          title : "Mantenimiento",
+          icon:"mdi mdi-folder-lock-open",
+          submenu:[
+            {
+              title:"hospitales",
+              url :"/hospitales"
+            },{
+              title:"medicos",
+              url :"/medicos"
+            }
+          ]}
+      ]
+      if(ROL ==="ADMIN"){
+        menu[1].submenu.unshift({
+            title:"usuarios",
+            url :"/usuarios"
+          })
+      }
+      return menu
+}
 
 module.exports = app;

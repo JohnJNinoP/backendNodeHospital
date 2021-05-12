@@ -28,6 +28,22 @@ exports.verificaToken = function(req,res,next){
     })
 }
 
+exports.verificaAdmin = function(req,res,next){
+
+    var user = req.usuario;
+
+    if(user.role ==="ADMIN"){
+        next()
+    }else{
+        return res.status(401).json({
+            ok:false,
+            menssage : "Usuario no admin",
+            error:{ message : "user not admin" }
+        })
+    }
+
+}
+
 
 
     

@@ -82,7 +82,7 @@ app.get('/collection/:tabla/:busqueda',(req,res)=>{
 function buscarHospitales(valueRegex){
 
     return new Promise((resolve,reject)=>{
-        hospitalModel.find({name: {  $regex : valueRegex}},'name ').exec((err,values)=>{
+        hospitalModel.find({name: {  $regex : valueRegex}},'name img').exec((err,values)=>{
             if(err){
                 reject("Error al cargar hospitales" , err)
             }else {
@@ -110,7 +110,7 @@ function buscarMedico(valueRegex){
 function buscarUsuario(valueRegex){
 
     return new Promise((resolve,reject)=>{
-        usuariosModel.find({},'name email role')
+        usuariosModel.find({},'name email role img')
         .or([{name: {  $regex : valueRegex} } ,{ email: { $regex : valueRegex } }])  // valida dos columnas 
         .exec((err,values)=>{
             if(err){

@@ -106,10 +106,20 @@ app.post('/' , (req,res) => {
 //===========================================
 //Actualizar usuario
 //===========================================
-app.put('/:id', autentication.verificaToken , (req,res)=>{
+app.put('/:id', [autentication.verificaToken,autentication.verificaAdmin] , (req,res)=>{
 
     let id =  req.params.id
     let body = req.body
+
+    // if(req.usuario?._id){
+    //     if(req.usuario._id == id){
+    //         return res.status(401).json({
+    //             ok:false,
+    //             menssage : "User not valid",
+    //             error:{message : "not valid"}
+    //         })
+    //     }
+    // }
 
     usuarioModel.findById(id,'name email role').exec((err,user)=>{
         if(err) {
@@ -151,7 +161,7 @@ app.put('/:id', autentication.verificaToken , (req,res)=>{
 //===========================================
 // Eliminar usuario
 //===========================================
-app.delete('/:id',autentication.verificaToken,(req,res)=>{
+app.delete('/:id',[autentication.verificaToken,autentication.verificaAdmin],(req,res)=>{
     let id = req.params.id
 
     usuarioModel.findByIdAndDelete(id).exec((err,user)=>{
